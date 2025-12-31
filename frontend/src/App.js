@@ -68,7 +68,7 @@ function App() {
       }
 
       if (response.success) {
-        const balance = response.balance !== undefined ? response.balance : 0;
+        const balance = response.balance !== undefined && response.balance !== null ? Number(response.balance) : 0;
         setCurrentUser({
           userId: response.userId,
           username: response.username,
@@ -145,7 +145,8 @@ function App() {
     }
 
     const total = parseFloat(getTotalPrice());
-    if (total > userBalance) {
+    const currentBalance = userBalance ? Number(userBalance) : 0;
+    if (total > currentBalance) {
       alert('Insufficient balance!');
       return;
     }
@@ -155,7 +156,7 @@ function App() {
       
       if (result.success) {
         // Update balance from response if available, otherwise calculate
-        const newBalance = userBalance - total;
+        const newBalance = Math.max(0, currentBalance - total);
         setUserBalance(newBalance);
         setCart([]);
         
@@ -263,7 +264,7 @@ function App() {
         <header className="header">
           <h1>Virtual Vending Machine</h1>
           <div className="header-right">
-            <div className="balance">Balance: ${userBalance.toFixed(2)}</div>
+            <div className="balance">Balance: ${userBalance ? Number(userBalance).toFixed(2) : '0.00'}</div>
             <button onClick={handleLogout} className="logout-btn">Logout</button>
           </div>
         </header>
