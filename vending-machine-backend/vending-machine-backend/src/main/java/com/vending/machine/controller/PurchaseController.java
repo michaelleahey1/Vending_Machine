@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/purchase")
-@CrossOrigin(origins = "*")
+
 public class PurchaseController {
 
     @Autowired

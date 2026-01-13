@@ -1,4 +1,4 @@
-const API_URL = 'http://Vending-machine-app-env.eba-qqcrsfbm.us-east-2.elasticbeanstalk.com/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://Vending-machine-app-env.eba-qqcrsfbm.us-east-2.elasticbeanstalk.com/api';
 
 // Admin Authentication
 export const adminLogin = async (username, password) => {
@@ -39,9 +39,12 @@ export const userLogin = async (username, password) => {
     });
     
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ message: 'Login failed' }));
-      return { success: false, message: errorData.message || `Server error: ${response.status}` };
-    }
+  const errorData = await response.json().catch(() => ({ message: 'Login failed' }));
+  console.log('Login failed:', errorData);
+  console.log('Sent username:', username);
+  console.log('Sent password:', password);
+  return { success: false, message: errorData.message || `Server error: ${response.status}` };
+}
     
     const data = await response.json();
     return data;
